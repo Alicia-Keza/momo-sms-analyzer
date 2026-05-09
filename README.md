@@ -30,7 +30,7 @@ We are building a web application that:
 [Paste the link to your Scrum board here]
 
 ## How to Run the Project
- To be  updated as we progress
+ To be  updated 
 
 ## AI Usage Log
 We used Claude AI (by Anthropic) to help draft the initial README structure and project description. The content was reviewed, edited, and personalized by the whole team.

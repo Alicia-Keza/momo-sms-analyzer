@@ -24,8 +24,8 @@ We are building a web application that:
 - Shows the results on a visual dashboard with charts and tables
 
 ## System Architecture
+https://viewer.diagrams.net/?tags=%7B%7D&lightbox=1&highlight=0000ff&edit=_blank&layers=1&nav=1&dark=auto#Uhttps%3A%2F%2Fdrive.google.com%2Fuc%3Fid%3D1pJqEcyqJ5frSs4OMQe_iEsQh8y3e-S65%26export%3Ddownload
 ![Architecture Image](./docs/images/architecture.png)
-
 
 ## Scrum Board
 https://github.com/users/Alicia-Keza/projects/1

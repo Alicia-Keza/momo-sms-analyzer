@@ -27,7 +27,7 @@ We are building a web application that:
 [Paste the link to your diagram here]
 
 ## Scrum Board
-[Paste the link to your Scrum board here]
+https://github.com/users/Alicia-Keza/projects/1
 
 ## How to Run the Project
  To be  updated 

@@ -29,7 +29,7 @@ https://viewer.diagrams.net/?tags=%7B%7D&lightbox=1&highlight=0000ff&edit=_blank
 
 
 ## Scrum Board
-[Paste the link to your Scrum board here]
+https://github.com/users/Alicia-Keza/projects/1
 
 ## How to Run the Project
  To be  updated 

@@ -12,7 +12,7 @@ CREATE INDEX idx_transactions_status
     ON transactions (status); 
 
 -- to help when filtering by both transaction date and status and for failed transactions in last 7 days 
-CREATE INDEX idx_transactions_date_status
+CREATE INDEX idx_transactions_status_date
     ON transactions (status, transaction_date);
 
 -- helps in finding participants faster and alsoo easier
@@ -71,11 +71,8 @@ ALTER TABLE transactions
 ALTER TABLE phone_numbers
     ADD CONSTRAINT uq_msisdn UNIQUE (msisdn);
 
-ALTER TABLE phone_numbers
-    ADD CONSTRAINT chk_msisdn_format
-        CONSTRAINT uq_msisdn UNIQUE (msisdn);
+-- Security and also format check  rules
 
-        
 ALTER TABLE phone_numbers
     ADD CONSTRAINT chk_msisdn_format
     CHECK (msisdn REGEXP '^250[0-9]{9}$');
@@ -90,5 +87,4 @@ ALTER TABLE transactions
 
 ALTER TABLE transactions
     ADD CONSTRAINT chk_transactions_amount_max
-    CHECK (amount < 10000000.00);
-    
+    CHECK (amount <= 10000000.00);

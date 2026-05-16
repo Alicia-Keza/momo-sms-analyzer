@@ -1,20 +1,28 @@
+/* creating the database */
+create database momo_db;
+ character set utf8mb4
+ collate utf8mb4_unicode_ci;
+use momo_db;
+
 /* Creating tables */
 
 /*users table*/
 create table users(
-    user_id int not null auto_increment primary key,
-    full_name varchar(255) not null,
-    created_at timestamp default current_timestamp,
+    user_id int not null auto_increment primary key, 
+    full_name varchar(255) not null, 
+    created_at timestamp default current_timestamp, 
 );
+engine=innodb default charset=utf8mb4;
 
 /*agents table*/
 create table agents(
-    agent_id int not null auto_increment primary key ,
+    agent_id int not null auto_increment primary key,
     agent_name varchar(255) not null,
     agent_code varchar(50) not null,
     created_at timestamp default current_timestamp,
 
 );
+engine=innodb default charset=utf8mb4;
 
 /*merchants table*/
 create table merchants(
@@ -23,6 +31,8 @@ create table merchants(
     shop_code varchar(50) not null,
     created_at timestamp default current_timestamp,    
 );
+engine=innodb default charset=utf8mb4;
+
 /*service providers table*/
 create table service_providers(
     provider_id int not null auto_increment primary key,
@@ -30,6 +40,8 @@ create table service_providers(
     service_type enum('utility','telco','insurance') not null,
     created_at timestamp default current_timestamp,    
 );
+engine=innodb default charset=utf8mb4;
+
 /*transaction_categories table*/
 create table transaction_categories(
     category_id int not null auto_increment primary key,
@@ -37,6 +49,8 @@ create table transaction_categories(
     direction ENUM('credit','debit') NOT NULL, 
 
 );
+engine=innodb default charset=utf8mb4;
+
 
 /*sms_messages table*/
 create table sms_messages(
@@ -51,6 +65,7 @@ create table sms_messages(
     constraint chk_sms_epoch CHECK (received_epoch_ms > 0),
 
 );
+engine=innodb default charset=utf8mb4;
 
 /*phone_numbers table*/
 create table phone_numbers(
@@ -60,7 +75,8 @@ create table phone_numbers(
     msisdn varchar(50) not null,
     linked_at timestamp default not null current_timestamp,
     constraint chk_phone_owner_id CHECK (owner_id > 0),
-);
+); 
+engine=innodb default charset=utf8mb4;
 
 /* accounts table*/
 create table accounts(
@@ -76,6 +92,8 @@ create table accounts(
     constraint chl_accounts_closed_at check (closed_at is null or closed_at > opened_at)
 
 );
+engine=innodb default charset=utf8mb4;
+
 
 /*transactions table*/
 create table transactions(
@@ -96,6 +114,7 @@ create table transactions(
     constraint chck_transactions_amount check (amount>0),
     constraint chck_transactions_fee check (fee_amount>=0)  
 );
+engine=innodb default charset=utf8mb4;
 
     
 /* transaction_participants table*/
@@ -109,6 +128,7 @@ create table transaction_participants(
     foreign key (transaction_id) references transactions(transaction_id) on delete cascade null on update cascade,
     constraint chk_participants_party_id check (party_id > 0),
 );
+engine=innodb default charset=utf8mb4;
 
 /*balance_snapshots table*/
 create table balance_snapshots(
@@ -122,6 +142,9 @@ create table balance_snapshots(
     foreign key (transaction_id) references transactions(transaction_id) on delete cascade  on update cascade,
     constraint chk_snapshots_balance check (balance_after > 0)
 );
+
+engine=innodb default charset=utf8mb4;
+
 /* system_logs table*/
 create table transaction_flags(
     log_id int not null auto_increment primary key,
@@ -136,3 +159,5 @@ create table transaction_flags(
     constraint fk_logs_transactions
     foreign key (transaction_id) references transactions(transaction_id) on delete set null on update cascade,   
 );
+
+engine=innodb default charset=utf8mb4;

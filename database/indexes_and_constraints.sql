@@ -50,4 +50,12 @@ ALTER TABLE accounts
 -- Every agent code  should only exist  only once
 ALTER TABLE agents
     ADD CONSTRAINT uq_agent_code UNIQUE (agent_code);
-    
+     
+-- merchant shop code should be unique
+ALTER TABLE merchants
+    ADD CONSTRAINT uq_shop_code UNIQUE (shop_code);
+
+-- provider_name  must be unique to avoid ambiguos joins from  the text fields
+ALTER TABLE service_providers
+    ADD CONSTRAINT uq_provider_name UNIQUE (provider_name);
+

@@ -19,3 +19,11 @@ CREATE INDEX idx_transactions_date_status
 CREATE INDEX idx_participants_party
     ON transaction_participants (party_type, party_id);
 
+-- this is for finding phone owners
+CREATE INDEX idx_phones_owner
+    ON phone_numbers (owner_type, owner_id);
+
+-- here is looking up raw sms ordered by received time
+CREATE INDEX idx_sms_received
+    ON sms_messages (received_epoch_ms);
+    

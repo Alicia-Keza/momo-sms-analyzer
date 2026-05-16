@@ -35,4 +35,10 @@ CREATE INDEX idx_sms_address
 CREATE INDEX idx_logs_created
     ON system_logs (created_at);
 
+-- Filtering logss  according to event type
+CREATE INDEX idx_logs_event
+    ON system_logs (event_type);
 
+-- Balnceing hisory  lookups
+CREATE INDEX idx_snapshots_at
+    ON balance_snapshots (snapshot_at);

@@ -42,3 +42,12 @@ CREATE INDEX idx_logs_event
 -- Balnceing hisory  lookups
 CREATE INDEX idx_snapshots_at
     ON balance_snapshots (snapshot_at);
+
+-- Account number should be unique
+ALTER TABLE accounts
+    ADD CONSTRAINT uq_account_number UNIQUE (account_number);
+
+-- Every agent code  should only exist  only once
+ALTER TABLE agents
+    ADD CONSTRAINT uq_agent_code UNIQUE (agent_code);
+    

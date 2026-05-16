@@ -59,3 +59,36 @@ ALTER TABLE merchants
 ALTER TABLE service_providers
     ADD CONSTRAINT uq_provider_name UNIQUE (provider_name);
 
+-- transaction category names should be unique  like "send_money" row
+ALTER TABLE transaction_categories
+    ADD CONSTRAINT uq_category_name UNIQUE (name);
+
+-- external transaction id must stay unique which  will  prevent repeating
+ALTER TABLE transactions
+    ADD CONSTRAINT uq_external_tx_id UNIQUE (external_tx_id);
+
+-- same phone number should notexist  more than once
+ALTER TABLE phone_numbers
+    ADD CONSTRAINT uq_msisdn UNIQUE (msisdn);
+
+ALTER TABLE phone_numbers
+    ADD CONSTRAINT chk_msisdn_format
+        CONSTRAINT uq_msisdn UNIQUE (msisdn);
+
+        
+ALTER TABLE phone_numbers
+    ADD CONSTRAINT chk_msisdn_format
+    CHECK (msisdn REGEXP '^250[0-9]{9}$');
+
+ALTER TABLE accounts
+    ADD CONSTRAINT chk_account_number_format
+    CHECK (account_number REGEXP '^ACC-[0-9]{4,}$');
+
+ALTER TABLE transactions 
+    ADD CONSTRAINT chk_external_tx_id_format
+    CHECK (external_tx_id REGEXP '^TXN[0-9]+$');
+
+ALTER TABLE transactions
+    ADD CONSTRAINT chk_transactions_amount_max
+    CHECK (amount < 10000000.00);
+    

@@ -26,4 +26,13 @@ CREATE INDEX idx_phones_owner
 -- here is looking up raw sms ordered by received time
 CREATE INDEX idx_sms_received
     ON sms_messages (received_epoch_ms);
-    
+
+-- Filtering sms by sender
+CREATE INDEX idx_sms_address
+    ON sms_messages (address);
+
+-- checking logs  by created time
+CREATE INDEX idx_logs_created
+    ON system_logs (created_at);
+
+

@@ -148,3 +148,33 @@ INSERT INTO transaction_participants (participant_id, transaction_id, party_type
 (13, 107, 'user', 5, 'sender'),
 (14, 107, 'agent', 2, 'facilitator');
 
+--=================BALANCE_SNAPSHOTS Table(6 rows)==========================
+-- A snapshot of MOMO account balance right after a transaction
+-- failed transactions don't change the balance , so they get no snapshot
+INSERT INTO balance_snapshots (snapshot_id, account_id, transaction_id, balance_after, snapshot_at) VALUES
+(1, 1, 101, 45000.00, '2026-05-10 08:31:00'),
+(2, 2, 102, 15000.00, '2026-05-14 11:09:00'),
+(3, 3, 103, 2000.00, '2026-05-11 18:43:00'),
+(4, 4, 104, 3500.00, '2026-05-16 13:56:00'),
+(5, 5, 105, 8000.00, '2026-05-10 16:21:00'),
+(6, 2, 107, 20000.00, '2026-04-02 14:26:00');
+
+--==================SYSTEM_LOGS Table(8 rows)==============================
+-- one log line for each SMS the parser handheld
+-- row 6 is a WARN because the transaction failed 
+-- row 8 catches the same SMS being read twice
+INSERT INTO system_logs (log_id, sms_id, transaction_id, event_type, log_level, message, created_at) VALUES
+(1, 1, 101, 'parse-success', 'INFO', 'Send-money SMS parsed and transaction created successfully', '2026-05-10 08:31:00'),
+(2, 2, 102, 'parse-success', 'INFO', 'Airtime purchase SMS parsed successfully', '2026-05-14 11:09:00'),
+(3, 3, 103, 'parse-success', 'INFO', 'REG cash power SMS parsed successfully', '2026-05-11 18:43:00'),
+(4, 4, 104, 'parse-success', 'INFO', 'merchant payment SMS parsed successfully', '2026-05-16 13:56:00'),
+(5, 5, 105, 'parse-success', 'INFO', 'Insurance payment SMS parsed successfully', '2026-05-10 16:21:00'),
+--WARN: SMS parsed fine but the transaction it describes is a failure
+(6, 6, 106, 'parse-warn', 'WARN', 'SMS parsed but transaction status is failed', '2026-05-09 20:31:00'),
+(7, 7, 107, 'parse-success', 'INFO', 'Cash-out via agent SMS parsed successfully', '2026-04-02 14:26:00'),
+--WARN: duplicate SMS detected (sms_id 2 was seen twice)
+(8, 2, NULL, 'duplicate', 'WARN', 'Duplicate SMS detected , already processed', '2026-05-14 11:09:00');
+
+
+
+--==========================END OF SECTION 2================================================

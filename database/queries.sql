@@ -35,3 +35,19 @@ INSERT INTO transactions (external_tx_id, source_sms_id, account_id, category_id
 -- display the inserted transaction to confirm it worked.
 
 SELECT * FROM transactions WHERE external_tx_id = 'TXN20240126001';
+
+-- section c: update queries(update)
+
+-- q7 - update the pending transaction to completed
+
+UPDATE transactions SET status = 'completed' WHERE external_tx_id = 'TXN20240126001' and status = 'pending';
+
+-- verify the update worked
+SELECT * FROM transactions WHERE external_tx_id = 'TXN20240126001';
+
+-- q8 - bulk update: close an account by setting status to 'closed'
+
+UPDATE accounts SET status = 'closed', closed_at = NOW() WHERE account_id = 10;
+
+-- verify the update worked
+SELECT * FROM accounts WHERE account_id = 10;

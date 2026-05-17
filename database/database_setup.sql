@@ -117,10 +117,10 @@ create table transactions(
     source_sms_id BIGINT null default null comment'foreign key to the sms_messages table',
     account_id int not null comment'foreign key to the accounts table',
     category_id int not null comment'foreign key to the transaction_categories table',
-    status ENUM('pending','complete','failed') not null comment'status of the transaction',
+    status ENUM('pending','completed','failed') not null comment'status of the transaction',
     amount decimal(15,2) not null comment'amount of money transacted',
     fee_amount decimal(15,2) not null comment'fee amount of money transacted',
-    transacted_at timestamp not null default current_timestamp comment'time this transaction was transacted',
+    transacted_at timestamp not null comment'time this transaction was transacted',
     created_at timestamp not null default current_timestamp comment'time this transaction was created',
         constraint fk_transactions_sms
         foreign key (source_sms_id) references sms_messages(sms_id) on delete set null on update cascade comment'foreign key to the sms_messages table',
@@ -171,16 +171,16 @@ comment 'table linking balance snapshots to transactions and accounts';
 /* system_logs table*/
 create table system_logs(
     log_id int not null auto_increment primary key comment'an identifier for each log, unique for each log',
-    sms_id BIGINT  not null comment'foreign key to the sms_messages table',
-    transaction_id bigint not null comment'foreign key to the transactions table',
+    sms_id BIGINT  null default null comment'foreign key to the sms_messages table',
+    transaction_id bigint  null default null comment'foreign key to the transactions table',
     event_type ENUM('parse_success','parse_fail','duplicate') not null comment'type of event is either parse_success, parse_fail or duplicate',
     log_level ENUM('info','warn','error') not null comment'level of log is either info, warn or error',
     message text not null comment'message of the log in human readable format',
     created_at timestamp  not null default current_timestamp comment'time this log was created', 
     constraint fk_logs_sms
-    foreign key (sms_id) references sms_messages(sms_id) on delete cascade on update cascade comment'foreign key to the sms_messages table ',
+    foreign key (sms_id) references sms_messages(sms_id) on delete set null on update cascade comment'foreign key to the sms_messages table ',
     constraint fk_logs_transactions
-    foreign key (transaction_id) references transactions(transaction_id) on delete cascade on update cascade comment'foreign key to the transactions table'
+    foreign key (transaction_id) references transactions(transaction_id) on delete set null on update cascade comment'foreign key to the transactions table'
 
 )engine=innodb default charset=utf8mb4
 comment 'table linking system logs to sms messages and transactions';

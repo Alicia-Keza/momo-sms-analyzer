@@ -4,7 +4,7 @@
 use momo_db;
 
 
--- section a: read queries
+-- section a: read queries(select with joins)
 
 -- q1 — all transactions for a single user, joined through their account.
 
@@ -21,3 +21,17 @@ SELECT t.transaction_id, t.external_tx_id, u.full_name AS account_owner, tc.name
 -- q4 - top 5 users by total transaction volume(completed transactions only).
 
 SELECT u.user_id, u.full_name, COUNT(t.transaction_id) AS completed_tx_count, SUM(t.amount) AS total_volume_rwf, SUM(t.fee_amount) AS total_fees_paid_rwf FROM users u JOIN accounts a ON u.user_id = a.user_id JOIN transactions t ON a.account_id = t.account_id WHERE t.status = 'completed' GROUP BY u.user_id, u.full_name ORDER BY total_volume_rwf DESC LIMIT 5;
+
+-- q5 - every party involved in a specific transaction.
+
+SELECT tp.participant_id, tp.role, tp.party_type, tp.party_id, CASE tp.party_type WHEN 'user' THEN (SELECT full_name FROM users WHERE user_id = tp.party_id) WHEN 'agent' THEN (SELECT agent_name FROM agents WHERE agent_id = tp.party_id) WHEN 'merchant' THEN (SELECT merchant_name FROM merchants WHERE merchant_id = tp.party_id) WHEN 'provider' THEN (SELECT provider_name FROM service_providers WHERE provider_id = tp.party_id) END AS party_name FROM transaction_participants tp WHERE tp.transaction_id = 1006 ORDER BY tp.role;
+
+-- section b: create queries (insert)
+
+-- q6 - insert a new pending transaction for something to update later.
+
+INSERT INTO transactions (external_tx_id, source_sms_id, account_id, category_id, status, amount, fee_amount, transaction_date) VALUES ('TXN20240126001', NULL, 2, 1, 'pending', 6000.00, 60.00, '2024-01-26 09:00:00');
+
+-- display the inserted transaction to confirm it worked.
+
+SELECT * FROM transactions WHERE external_tx_id = 'TXN20240126001';

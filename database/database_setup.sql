@@ -106,4 +106,45 @@ INSERT INTO accounts (account_id, user_id, account_type, provider_name, status, 
 (4, 4, 'ACC-004', '36800004', 'personal', 'MTN Mobile Money', 'active', '2026-05-12 09:20:00'),
 (5, 5, 'ACC-005', '36800005', 'personal', 'MTN Mobile Money', 'active', '2026-05-12 09:45:00');
 
---
+-- =============TRANSACTIONS Table (7rows)===================
+-- Seven transactions covering the main MOMO activities seen in the XML data structure file
+-- external_tx_id uses 11-digit numeric IDs like the real financial Transaction ID in the XML
+-- Each row links to its source SMS(source_sms_id) and the account it touched
+INSERT INTO transactions (transaction_id, external_tx_id, source_sms_id, account_id, category_id, status, amount, fee_amount, transaction_date, created_at) VALUES
+(101, '76662021701', 1, 1, 1, 'completed', 5000.00, 50.00, '2026-05-10 08:30:00', '2026-05-10 08:31:00'),
+(102, '50019384572', 2, 2, 4, 'completed', 15000.00, 100.00, '2026-05-14 11:08:00', '2026-05-14 11:09:00'),
+(103, '50018273461', 3, 3, 3, 'completed', 2000.00, 0.00, '2026-05-11 18:42:00', '2026-05-11 18:43:00'),
+(104, '50020495683', 4, 4, 5, 'completed', 3500.00, 0.00, '2026-05-16 13:55:00', '2026-05-16 13:56:00'),
+(105, '50021506794', 5, 5, 8, 'completed', 8000.00, 0.00, '2026-05-10 16:20:00', '2026-05-10 16:21:00'),
+-- failed transfer:same SMS as row 6 in sms_messages
+(106, '50022617805', 6, 1, 2, 'failed', 7500.00, 0.00, '2026-05-09 20:30:00', '2026-05-09 20:31:00'),
+-- cash withdrawal through an agent: same SMS as row 7 in sms_messages
+(107, '50023728916', 7, 2, 7, 'completed', 20000.00, 350.00, '2026-04-02 14:25:00', '2026-04-02 14:26:00');
+
+--=============TRANSACTION_PARTICIPANTS Table(14 rows)===============
+-- Junction table for the many-to-many links between transactions and the four party tables(users,agents,merchants,service_providers)
+-- party_type tells which table party_id points to
+-- every transaction has atleast one party either(sender,receiver,facilitatotor)
+INSERT INTO transaction_participants (participant_id, transaction_id, party_type, party_id, role) VALUES
+-- tx 101: UWASE Yvette sends money to UWAMAHORO Josiane(user to user)
+(1, 101, 'user', 1, 'sender'),
+(2, 101, 'user', 2, 'receiver'),
+-- tx 102: MUKASE Claudine buys airtime from Airtel airtime(user to service_provider)
+(3, 102, 'user', 3, 'sender'),
+(4, 102, 'service_provider', 2, 'receiver'),
+-- tx 103: HABIMANA Jean pays his power bill to REG cash power(user to service_provider)
+(5, 103, 'user', 4, 'sender'),
+(6, 103, 'service_provider', 1, 'receiver'),
+-- tx 104:KAYIRANGA Marie pays to SIMBA Supermaket(user to merchant)
+(7, 104, 'user', 5, 'sender'),
+(8, 104, 'merchant', 1, 'receiver'),
+--tx 105: UWASE Yvette pays her insurance to sanlam insurance(user to service_provider)
+(9, 105, 'user', 1, 'sender'),
+(10, 105, 'service_provider', 5, 'receiver'),
+-- tx 106: failed transfer from UWAMAHORO Josiane to MUKASE Claudine
+(11, 106, 'user', 2, 'sender'),
+(12, 106, 'user', 3, 'receiver'),
+-- tx 107: KAYIRANGA Marie withdraws cash through Agent Sarah(user with agent as a facilitator)
+(13, 107, 'user', 5, 'sender'),
+(14, 107, 'agent', 2, 'facilitator');
+

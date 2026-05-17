@@ -74,4 +74,36 @@ INSERT INTO sms_messages (sms_id, address, received_epoch_ms, body, readable_dat
 (3, 'M-Money', 1779468120000, '*162*TxId:50018273461*S*Your payment of 2000 RWF to Airtime with token  has been completed at 2026-05-11 18:42:00. Fee was 0 RWF. Your new balance: 18000 RWF .', '11 May 2026 6:42:00 PM', '+250788110381', '20260511', '2026-05-11 18:43:00' ),
 (4, 'M-Money', 1779796500000, 'TxId: 50020495683. Your payment of 3,500 RWF to SIMBA Supermarket 1005 has been completed at 2026-05-16 13:55:00. Your new balance: 24,000 RWF. Fee was 0 RWF.', '16 May 2026 1:55:00 PM', '+250788110382', '20260516', '2026-05-16 13:56:00'),
 (5, 'M-Money', 1779978000000, '*164*S*Y''ello,A transaction of 8000 RWF by Sanlam Insurance on your MOMO account was successfully completed at 2026-05-10 16:20:00. Message from debit receiver. Your new balance:16000 RWF. Fee was 0 RWF. Financial Transaction Id: 50021506794.*EN#', '10 May 2026 4:20:00 PM', '+250788110383', '20260510', '2026-05-10 16:21:00'),
-(6, 'M-Money', 1780165800000, '*143*R*Y''ello, the transaction with amount 7500 RWF for MUKASE Claudine with message: 1763055172864732058079215 failed at 2026-05-09 20:30:00 .Please Contact MobileMoney HelpLine for Assistance.Thank you for using MTN MobileMoney.*EN#','09 May 2026 8:30:00 PM', '+250788110384', '20260509', '2026-05-09 20:31:00');
+(6, 'M-Money', 1780165800000, '*143*R*Y''ello, the transaction with amount 7500 RWF for MUKASE Claudine with message: 1763055172864732058079215 failed at 2026-05-09 20:30:00 .Please Contact MobileMoney HelpLine for Assistance.Thank you for using MTN MobileMoney.*EN#','09 May 2026 8:30:00 PM', '+250788110384', '20260509', '2026-05-09 20:31:00'),
+(7, 'M-Money', 1780403100000, ' You KAYIRANGA Marie (*********012) have via agent: Agent Sarah (250790222222), withdrawn 20000 RWF from your mobile money account: 36800005 at 2026-04-02 14:25:00 and you can now collect your money in cash. Your new balance: 4000 RWF. Fee paid: 350 RWF. Message from agent:1. Financial Transaction Id: 50023728916.','2 April 2026 2:25:00 PM', '+250788110383', '20260402', '2026-04-02 14:26:00');
+
+-- ==========PHONE_NUMBERS Table (10 rows)================
+-- One phone number per user and per agent
+-- owner_type tells which table owner_id points to (either users or agents since they are the only ones to have phone numbers in this project)
+-- This is the polymorphic link, MYSQL can't enforce this with a foreign key because FK can only point to one table
+INSERT INTO phone_numbers (phone_id, owner_type, owner_id, msisdn, linked_at) VALUES
+-- Users (owner_type='USER', owner_id matches users.user_id)
+(1, 'USER', 1, '250788123456', '2026-05-10 08:03:00')
+(2, 'USER', 2, '250788838702', '2026-05-11 08:15:00')
+(3, 'USER', 3, '250788456789', '2026-05-12 09:14:00')
+(4, 'USER', 4, '250788675845', '2026-05-12 09:20:00')
+(5, 'USER', 5, '250788234356', '2026-05-12 09:45:00')
+-- Agents (owner_type='AGENT', owner_id matches agents.agent_id)
+(6, 'AGENT', 1, '250789987654', '2026-05-13 09:50:00')
+(7, 'AGENT', 2, '250789987655', '2026-05-14 10:07:00')
+(8, 'AGENT', 3, '250789987656', '2026-05-15 11:00:00')
+(9, 'AGENT', 4, '250789987657', '2026-05-16 12:00:00')
+(10, 'AGENT', 5, '250789987658', '2026-05-17 12:10:00')
+
+-- ============ACCOUNTS Table (5 rows)===================
+-- one MTN MOMO account per user
+-- account numbers use short numeric style seen in the XML file(e.g:"36521838")
+-- closed_at is NULL because all accounts are still open
+INSERT INTO accounts (account_id, user_id, account_type, provider_name, status, opened_at, closed_at) VALUES
+(1, 1, 'ACC-001', '36800001', 'personal', 'MTN Mobile Money', 'active', '2026-05-10 08:03:00'),
+(2, 2, 'ACC-002', '36800002', 'personal', 'MTN Mobile Money', 'active', '2026-05-11 08:15:00'),
+(3, 3, 'ACC-003', '36800003', 'personal', 'MTN Mobile Money', 'active', '2026-05-12 09:14:00'),
+(4, 4, 'ACC-004', '36800004', 'personal', 'MTN Mobile Money', 'active', '2026-05-12 09:20:00'),
+(5, 5, 'ACC-005', '36800005', 'personal', 'MTN Mobile Money', 'active', '2026-05-12 09:45:00');
+
+--

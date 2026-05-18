@@ -83,7 +83,7 @@ ALTER TABLE accounts
 
 ALTER TABLE transactions 
     ADD CONSTRAINT chk_external_tx_id_format
-    CHECK (external_tx_id REGEXP '^TXN[0-9]+$');
+    CHECK (external_tx_id REGEXP '^(TXN[0-9]+|[0-9]+)$');
 
 ALTER TABLE transactions
     ADD CONSTRAINT chk_transactions_amount_max

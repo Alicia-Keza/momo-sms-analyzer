@@ -79,7 +79,7 @@ ALTER TABLE phone_numbers
 
 ALTER TABLE accounts
     ADD CONSTRAINT chk_account_number_format
-    CHECK (account_number REGEXP '^ACC-[0-9]{4,}$');
+    CHECK (account_number REGEXP '^TXN[0-9]+$');
 
 ALTER TABLE transactions 
     ADD CONSTRAINT chk_external_tx_id_format

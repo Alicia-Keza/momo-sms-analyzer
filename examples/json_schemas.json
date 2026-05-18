@@ -105,6 +105,7 @@
             "sms_id": 1,
             "transaction_id": 1001,
             "event_type": "parse_success",
+            "log_level": "INFO",
             "message": "SMS parsed successfully and transaction created successfully",
             "created_at": "2024-01-25T10:06:00Z"
         }

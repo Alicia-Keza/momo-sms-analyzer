@@ -171,7 +171,7 @@ INSERT INTO system_logs (log_id, sms_id, transaction_id, event_type, log_level, 
 (4, 4, 104, 'parse_success', 'INFO', 'merchant payment SMS parsed successfully', '2026-05-16 13:56:00'),
 (5, 5, 105, 'parse_success', 'INFO', 'Insurance payment SMS parsed successfully', '2026-05-10 16:21:00'),
 --WARN: SMS parsed fine but the transaction it describes is a failure
-(6, 6, 106, 'parse_failed', 'WARN', 'SMS parsed but transaction status is failed', '2026-05-09 20:31:00'),
+(6, 6, 106, 'parse_fail', 'WARN', 'SMS parsed but transaction status is failed', '2026-05-09 20:31:00'),
 (7, 7, 107, 'parse_success', 'INFO', 'Cash-out via agent SMS parsed successfully', '2026-04-02 14:26:00'),
 --WARN: duplicate SMS detected (sms_id 2 was seen twice)
 (8, 2, NULL, 'duplicate', 'WARN', 'Duplicate SMS detected , already processed', '2026-05-14 11:09:00');

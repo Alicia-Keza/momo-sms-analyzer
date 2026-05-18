@@ -11,7 +11,7 @@ use momo_db;
 create table users(
     user_id int not null auto_increment primary key comment 'primary key for each end user',
     full_name varchar(255) not null comment 'full legal name of the user',
-    created_at timestamp not null default current_timestamp comment 'time the user opened the account',
+    created_at timestamp not null default current_timestamp comment 'time the user opened the account'
 )
 engine=innodb default charset=utf8mb4
 comment 'table storing information about end users';
@@ -21,7 +21,7 @@ create table agents(
     agent_id int not null auto_increment primary key comment'an identifier for each momo agent, unique for each agent',
     agent_name varchar(255) not null comment'agent business name or trading name',
     agent_code varchar(50) not null comment 'MNO-issued unique identifier code for the agent',
-    created_at timestamp not null default current_timestamp comment 'time this agent record was created in the system',
+    created_at timestamp not null default current_timestamp comment 'time this agent record was created in the system'
 
 )
 engine=innodb default charset=utf8mb4
@@ -32,7 +32,7 @@ create table merchants(
     merchant_id int not null auto_increment primary key comment'an identifier for each momo merchant, unique for each merchant',
     merchant_name varchar(255) not null comment'merchant business name or trading name',
     shop_code varchar(50) not null comment'MNO-issued unique identifier code for the merchant',
-    created_at timestamp not null default current_timestamp comment 'time this merchant record was created in the system', 
+    created_at timestamp not null default current_timestamp comment 'time this merchant record was created in the system'
 )
 engine=innodb default charset=utf8mb4
 comment 'momo merchants who accept momo payments';
@@ -42,7 +42,7 @@ create table service_providers(
     provider_id int not null auto_increment primary key comment'an identifier for each service provider, unique for each provider',
     provider_name varchar(255) not null comment 'name of the third party provider billed with momo',
     service_type enum('utility','telco','insurance') not null comment 'category of services such as utility(water,electricity,internet,tv subscription), telco(mobile data, airtime), insurance()',
-    created_at timestamp not null default current_timestamp comment 'time the provider record was inserted into the system',  
+    created_at timestamp not null default current_timestamp comment 'time the provider record was inserted into the system'
 )
 engine=innodb default charset=utf8mb4
 comment 'utility, telco, and insurance providers billed with momo';
@@ -67,8 +67,8 @@ create table sms_messages(
     readable_date varchar(50) not null comment'human-readable date string from the android sms provider',
     service_center varchar(50) not null comment'service center number that delivered the SMS',
     backup_set char(8) not null comment'8-character backup set label (constant for each backup file)',
-    ingested_at timestamp  not null default current_timestamp comment'time this SMS row was inserted into the system',
-    constraint chk_sms_epoch CHECK (received_epoch_ms > 0) comment 'ensure the epoch timestamp is positive',
+    ingested_at timestamp  not null default current_timestamp comment'time this SMS row was inserted into the system'
+    constraint chk_sms_epoch CHECK (received_epoch_ms > 0)
 
 )
 engine=innodb default charset=utf8mb4
@@ -86,7 +86,7 @@ create table phone_numbers(
     owner_id int not null comment'polymorphic key linking to users or agents table ',
     msisdn varchar(50) not null comment'mobile number in international format',
     linked_at timestamp not null default current_timestamp comment'time this phone number was added to the system',
-    constraint chk_phone_owner_id CHECK (owner_id > 0) comment ' constraint to ensure owner_id is a positive integer',
+    constraint chk_phone_owner_id CHECK (owner_id > 0) 
 
 )engine=innodb default charset=utf8mb4
 comment 'table linking phone numbers to users or agents which is also a junction table for users and agents';
@@ -102,8 +102,8 @@ create table accounts(
     opened_at timestamp not null default current_timestamp comment'time this account was opened',
     closed_at timestamp null default null comment'time this account was closed',  
     constraint fk_accounts_user 
-     foreign key (user_id) references users(user_id) on delete restrict on update cascade comment'foreign key to the users table,  restricts deletion or update of users if there are accounts associated with them',
-    constraint chl_accounts_closed_at check (closed_at is null or closed_at > opened_at) comment 'constraint to ensure that closed_at is either null or greater than opened_at'
+     foreign key (user_id) references users(user_id) on delete restrict on update cascade,
+    constraint chk_accounts_closed_at check (closed_at is null or closed_at > opened_at) 
 
 
 )engine=innodb default charset=utf8mb4
@@ -123,13 +123,13 @@ create table transactions(
     transaction_date timestamp not null comment'time this transaction was transacted',
     created_at timestamp not null default current_timestamp comment'time this transaction was created',
         constraint fk_transactions_sms
-        foreign key (source_sms_id) references sms_messages(sms_id) on delete set null on update cascade comment'foreign key to the sms_messages table',
+        foreign key (source_sms_id) references sms_messages(sms_id) on delete set null on update cascade ,
         constraint fk_transactions_account
-        foreign key (account_id) references accounts(account_id) on delete restrict on update cascade comment'foreign key to the accounts table',
+        foreign key (account_id) references accounts(account_id) on delete restrict on update cascade,
         constraint fk_transactions_category
-        foreign key (category_id) references transaction_categories(category_id)  on delete restrict on update cascade comment'foreign key to the transaction_categories table',
-        constraint chck_transactions_amount check (amount>0) comment 'constraint to ensure that amount is a positive number',
-        constraint chck_transactions_fee check (fee_amount>=0) comment'constraint to ensure that fee amount is a non-negative number'
+        foreign key (category_id) references transaction_categories(category_id)  on delete restrict on update cascade ,
+        constraint chck_transactions_amount check (amount>0) ,
+        constraint chck_transactions_fee check (fee_amount>=0)
     
 )engine=innodb default charset=utf8mb4
 comment 'table linking transactions to sms messages and accounts';
@@ -146,8 +146,8 @@ create table transaction_participants(
     party_id int not null comment'foreign key to the users, merchants, agents or providers table',
     role ENUM ('sender','receiver','facilitator') not null comment'role of the participant is either sender, receiver or facilitator',
     constraint fk_participants_transaction
-    foreign key (transaction_id) references transactions(transaction_id) on delete cascade  on update cascade comment'foreign key to the transactions table',
-    constraint chk_participants_party_id check (party_id > 0) comment'constraint to ensure that party_id is a positive number'
+    foreign key (transaction_id) references transactions(transaction_id) on delete cascade  on update cascade,
+    constraint chk_participants_party_id check (party_id > 0) 
 
 )engine=innodb default charset=utf8mb4
 comment 'table linking participants to transactions';
@@ -160,9 +160,9 @@ create table balance_snapshots(
     balance_after decimal(15,2) not null comment'balance after transaction',
     snapshot_at timestamp not null default current_timestamp comment'time this snapshot was taken',
     constraint fk_snapshots_accounts
-    foreign key (account_id) references accounts(account_id) on delete cascade  on update cascade comment'foreign key to the accounts table',
+    foreign key (account_id) references accounts(account_id) on delete cascade  on update cascade,
     constraint fk_snapshots_transactions
-    foreign key (transaction_id) references transactions(transaction_id) on delete cascade  on update cascade comment'foreign key to the transactions table',
+    foreign key (transaction_id) references transactions(transaction_id) on delete cascade  on update cascade,
     constraint chk_snapshots_balance check (balance_after >= 0)
 
 )engine=innodb default charset=utf8mb4
@@ -178,9 +178,9 @@ create table system_logs(
     message text not null comment'message of the log in human readable format',
     created_at timestamp  not null default current_timestamp comment'time this log was created', 
     constraint fk_logs_sms
-    foreign key (sms_id) references sms_messages(sms_id) on delete set null on update cascade comment'foreign key to the sms_messages table ',
+    foreign key (sms_id) references sms_messages(sms_id) on delete set null on update cascade,
     constraint fk_logs_transactions
-    foreign key (transaction_id) references transactions(transaction_id) on delete set null on update cascade comment'foreign key to the transactions table'
+    foreign key (transaction_id) references transactions(transaction_id) on delete set null on update cascade
 
 )engine=innodb default charset=utf8mb4
 comment 'table linking system logs to sms messages and transactions';

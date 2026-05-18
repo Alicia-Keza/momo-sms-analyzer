@@ -67,7 +67,7 @@ create table sms_messages(
     readable_date varchar(50) not null comment'human-readable date string from the android sms provider',
     service_center varchar(50) not null comment'service center number that delivered the SMS',
     backup_set char(8) not null comment'8-character backup set label (constant for each backup file)',
-    ingested_at timestamp  not null default current_timestamp comment'time this SMS row was inserted into the system'
+    ingested_at timestamp  not null default current_timestamp comment'time this SMS row was inserted into the system',
     constraint chk_sms_epoch CHECK (received_epoch_ms > 0)
 
 )

@@ -147,6 +147,12 @@
             }
         },
 
+         "category": {
+      "category_id": 1,
+      "name": "send_money",
+      "direction": "debit"
+    },
+
         "participants": [
             {
                 "participant_id": 1,

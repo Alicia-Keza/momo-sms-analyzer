@@ -1,0 +1,262 @@
+{
+    "_meta": {
+      "schema_version": "1.0.0",
+      "description": "API response shapes for every entity in the Momo SMS database, plus fully-nested complex transaction object.Timestamps follow ISO 8601 (UTC, Z suffix). Monetary amounts are JSON numbers in RWF with two decimal places. Enum-backed columns serialize as strings using their database value.",
+      "source_database": "momo_db",
+      "owner": "BRACHA Ltd"
+    },
+
+    "entities": {
+        "user": {
+            "user_id": 1,
+            "full-name": "Alice Uwimana",
+            "created_at": "2024-01-15T08:30:00Z"
+        },
+
+        "phone_number": {
+            "phone_id": 1,
+            "owner_type": "user",
+            "owner_id": 1,
+            "msisdn": "250788123456",
+            "linked_at": "2024-01-15T08:35:00Z"
+        },
+
+        "account": {
+            "account_id": 1,
+            "user_id": 1,
+            "account_number": "ACC-0001",
+            "account_type": "personal",
+            "provider_name": "MTN Mobile Money",
+            "status": "active",
+            "opened_at": "2024-01-15T08:40:00Z",
+            "closed_at": null
+        },
+
+        "agent": {
+            "agent_id": 1,
+            "agent_name": "Kigali City Agent",
+            "agent_code": "AGT-001",
+            "created_at": "2024-01-10T08:00:00Z"
+        },
+
+        "merchant": {
+            "merchant_id": 1,
+            "merchant_name": "Simba Supermarket",
+            "shop_code": "SHOP-1001",
+            "created_at": "2024-01-12T08:00:00Z"
+        },
+
+        "service_provider": {
+            "provider_id": 1,
+            "provider_name": "Rwanda Energy Group",
+            "service_type": "utility",
+            "created_at": "2024-01-08T08:00:00Z"
+        },
+
+        "transaction_category": {
+            "category_id": 1,
+            "name": "send_money",
+            "direction": "debit"
+        },
+
+        "sms_message": {
+            "sms_id": 1,
+            "address": "M-Money",
+            "received_epoch_ms": 1706176800000,
+            "body": "*165*S*5,000 RWF transferred to Jean Pierre Habimana (250788234567) from 250788123456. Fee: 50 RWF. New balance: 45,000 RWF. Financial Transaction Id: TXN20240125001*EN#",
+            "readable_date": "25 Jan 2024 10:00:00 GMT+02:00",
+            "service_center": "+250788110013",
+            "backup_set": "20240125",
+            "ingested_at": "2024-01-25T10:05:00Z"
+        
+        },
+
+        "transaction": {
+            "transaction_id": 1001,
+            "external_tx_id": "TXN20240125001",
+            "source_sms_id": 1,
+            "account_id": 1,
+            "category_id": 1,
+            "status": "completed",
+            "amount": 5000.00,
+            "fee_amount": 50.00,
+            "transaction_date": "2024-01-25T10:00:00Z",
+            "created_at": "2024-01-25T10:05:00Z"
+        },
+
+        "transaction_participant": {
+            "participant_id": 1,
+            "transaction_id": 1001,
+            "party_type": "user",
+            "party_id": 1,
+            "role": "sender"
+        },
+
+        "balance_snapshot": {
+            "snapshot_id": 1,
+            "account_id": 1,
+            "transaction_id": 1001,
+            "balance_after": 45000.00,
+            "snapshot_at": "2024-01-25T10:00:00Z"
+        },
+
+        "system_log": {
+            "log_id": 1,
+            "sms_id": 1,
+            "transaction_id": 1001,
+            "event_type": "parse_success",
+            "message": "SMS parsed successfully and transaction created successfully",
+            "created_at": "2024-01-25T10:06:00Z"
+        }
+    },
+
+    "complex_transaction": {
+        "transaction_id": 1001,
+        "external_tx_id": "TXN20240125001",
+        "status": "completed",
+        "amount": 5000.00,
+        "fee_amount": 50.00,
+        "total_debited": 5050.00,
+        "transaction_date": "2024-01-25T10:00:00Z",
+        "created_at": "2024-01-25T10:05:00Z",
+
+        "source_sms": {
+            "sms_id": 1,
+            "address": "M-Money",
+            "received_epoch_ms": 1706176800000,
+            "body": "*165*S*5,000 RWF transferred to Jean Pierre Habimana (250788234567) from 250788123456. Fee: 50 RWF. New balance: 45,000 RWF. Financial Transaction Id: TXN20240125001*EN#",
+            "readable_date": "25 Jan 2024 10:00:00 GMT+02:00",
+            "service_center": "+250788110013",
+            "backup_set": "20240125",
+            "ingested_at": "2024-01-25T10:05:00Z"
+        },
+
+        "account": {
+            "account_id": 1,
+            "account_number": "ACC-0001",
+            "account_type": "personal",
+            "provider_name": "MTN Mobile Money",
+            "status": "active",
+            "opened_at": "2024-01-15T08:40:00Z",
+            "closed_at": null,
+            "owner":  {
+                "user_id": 1,
+                "full_name": "Alice Uwimana",
+                "created_at": "2024-01-15T08:30:00Z"
+            }
+        },
+
+        "participants": [
+            {
+                "participant_id": 1,
+                "role": "sender",
+                "party_type": "user",
+                "party": {
+                    "user_id": 1,
+                    "full_name": "Alice Uwimana",
+                    "phone": {
+                        "phone_id": 1,
+                        "msisdn": "250788123456",
+                        "linked_at": "2024-01-15T08:30:00Z"
+                    }
+                
+                }
+            },
+            {
+                "participant_id": 2,
+                "role": "receiver",
+                "party_type": "user",
+                "party": {
+                    "user_id": 2,
+                    "full_name": "Jean Pierre Habimana",
+                    "phone": {
+                        "phone_id": 2,
+                        "msisdn": "250788234567",
+                        "linked_at": "2024-01-15T08:30:00Z"
+                    }
+                }
+            }
+        ],
+
+        "balance_snapshot": {
+            "snapshot_id": 1,
+            "balance_after": 45000.00,
+            "snapshot_at": "2024-01-25T10:00:00Z"
+        },
+
+        "system_logs": [
+            {
+                "log_id": 1,
+                "event_type": "parse_success",
+                "log_level": "INFO",
+                "message": "SMS parsed successfully and transaction created successfully",
+                "created_at": "2024-01-25T10:06:00Z"
+            }
+        ]
+},
+
+"complex_transaction_merchant_payment": {
+    "transaction_id": 1005,
+    "external_tx_id": "TXN20240125005",
+    "status": "completed",
+    "amount": 3500.00,
+    "fee_amount": 0.00,
+    "total_debited": 3500.00,
+    "transaction_date": "2024-01-26T11:00:00Z",
+    
+
+    "account": {
+      "account_id": 1,
+      "account_number": "ACC-0001",
+      "account_type": "personal",
+      "provider_name": "MTN Mobile Money",
+      "status": "active",
+      "owner": {
+        "user_id": 7,
+        "full_name": "Diane Iribagiza"
+      }
+    },
+
+    "category": {
+      "category_id": 2,
+      "name": "merchant_payment",
+      "direction": "debit"
+    },
+
+    "participants": [
+      {
+        "participant_id": 9,
+        "role": "sender",
+        "party_type": "user",
+        "party": {
+          "user_id": 7,
+          "full_name": "Diane Iribagiza",
+          "phone": {
+            "msisdn": "250722789012"
+          }
+        }
+    },
+    {
+        "participant_id": 10,
+        "role": "receiver",
+        "party_type": "merchant",
+        "party": {
+          "merchant_id": 1,
+          "merchant_name": "Simba Supermarket",
+          "shop_code": "SHOP-1001"
+        }
+    }
+],     
+    
+    "balance_snapshot": {
+      "snapshot_id": 5,
+      "balance_after": 24000.00,
+      "snapshot_at": "2024-01-25T14:00:00Z"
+    }
+}
+}
+
+
+     
+
+     

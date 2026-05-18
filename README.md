@@ -302,8 +302,7 @@ momo-sms-analyzer/
 ├── api/                             # REST API layer (in progress)
 ├── data/                            # SMS XML backup files
 ├── database/
-│   ├── database_setup.sql           # CREATE DATABASE + all 12 tables
-│   ├── indexes_and_constraints.sql  # Indexes, unique constraints, format checks
+│   ├── database_setup.sql           # CREATE DATABASE + all 12 tables, indexes, unique/format constraints, sample data
 │   └── queries.sql                  # CRUD queries + full_transaction_details view
 ├── docs/
 │   ├── images/
@@ -328,8 +327,7 @@ momo-sms-analyzer/
 | Branch | Contents |
 |---|---|
 | `main` | Stable base — project structure and documentation |
-| `feature/ddl-schema` | `database/database_setup.sql` — full 12-table MySQL schema |
-| `feature/indexes-constraints` | `database/indexes_and_constraints.sql` — indexes, unique constraints, format checks |
+| `feature/ddl-schema` | `database/database_setup.sql` — full 12-table MySQL schema, indexes, unique/format constraints |
 | `feature/json-schemas` | `examples/json_schemas.json` + `examples/json_mapping.md` — API contract |
 | `feature/queries-crud` | `database/queries.sql` — read/write queries and `full_transaction_details` view |
 | `feature/sample-data` | Seed data for testing (in progress) |

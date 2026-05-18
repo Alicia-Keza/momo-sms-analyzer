@@ -55,6 +55,30 @@ Raw XML SMS Backup
 
 ---
 
+## AI Usage Log Document
+
+A detailed, honest record of every AI tool interaction during this project — limited to permitted uses (grammar/syntax checking, code syntax verification, and cited MySQL best-practice research), with inline attribution in the affected code.
+
+> 📄 [`docs/AI_USAGE_LOG.md`](docs/AI_USAGE_LOG.md)
+
+---
+
+## Database Design Document
+
+The full design document (PDF): ERD with documentation, design rationale, data dictionary, sample queries with screenshots, and the security/accuracy rules added to the database.
+
+> 📄 [`docs/Database Design Document - The GRID.pdf`](docs/Database%20Design%20Document%20-%20The%20GRID.pdf)
+
+---
+
+## Database Output Screenshots
+
+Screenshots of executed SQL — CRUD query results (`Q001`–`Q011`) and security/constraint enforcement (`SEC001`–`SEC008`) — used as evidence in the design document.
+
+> 📁 [`docs/screenshots/`](docs/screenshots/)
+
+---
+
 ## Database Design (`momo_db`)
 
 The database is built in **MySQL** with `utf8mb4` encoding and InnoDB engine throughout. It consists of **12 tables** organized into three layers.

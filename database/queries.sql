@@ -24,7 +24,7 @@ SELECT u.user_id, u.full_name, COUNT(t.transaction_id) AS completed_tx_count, SU
 
 -- q5 - every party involved in a specific transaction.
 
-SELECT tp.participant_id, tp.role, tp.party_type, tp.party_id, CASE tp.party_type WHEN 'user' THEN (SELECT full_name FROM users WHERE user_id = tp.party_id) WHEN 'agent' THEN (SELECT agent_name FROM agents WHERE agent_id = tp.party_id) WHEN 'merchant' THEN (SELECT merchant_name FROM merchants WHERE merchant_id = tp.party_id) WHEN 'provider' THEN (SELECT provider_name FROM service_providers WHERE provider_id = tp.party_id) END AS party_name FROM transaction_participants tp WHERE tp.transaction_id = 1006 ORDER BY tp.role;
+SELECT tp.participant_id, tp.role, tp.party_type, tp.party_id, CASE tp.party_type WHEN 'user' THEN (SELECT full_name FROM users WHERE user_id = tp.party_id) WHEN 'agent' THEN (SELECT agent_name FROM agents WHERE agent_id = tp.party_id) WHEN 'merchant' THEN (SELECT merchant_name FROM merchants WHERE merchant_id = tp.party_id) WHEN 'provider' THEN (SELECT provider_name FROM service_providers WHERE provider_id = tp.party_id) END AS party_name FROM transaction_participants tp WHERE tp.transaction_id = 101 ORDER BY tp.role;
 
 -- section b: creating queries (insert)
 
@@ -47,10 +47,10 @@ SELECT * FROM transactions WHERE external_tx_id = 'TXN20240126001';
 
 -- q8 - bulk update: close an account by setting status to 'closed'
 
-UPDATE accounts SET status = 'closed', closed_at = NOW() WHERE account_id = 10;
+UPDATE accounts SET status = 'closed', closed_at = NOW() WHERE account_id = 4;
 
 -- verify the update worked
-SELECT * FROM accounts WHERE account_id = 10;
+SELECT * FROM accounts WHERE account_id = 8;
 
 -- section d: deleting queries(delete)
 

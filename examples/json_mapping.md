@@ -166,8 +166,8 @@ See the `complex_transaction` (party_type = user) and
 
 ## Nesting rules summary 
 
-1. **Flat entity** representation include every column from the SQL row, FKs as bare integers.
-2. **Nested** reprentations replace each FK integer with the full embedded objects of the referenced row.
+1. **Flat entity** representation includes every column from the SQL row, FKs as bare integers.
+2. **Nested** representations replace each FK integer with the full embedded objects of the referenced row.
 3. When parent embeds a child, the child omits the back-pointing FK (e.g. an account inside a transaction omits `user_id` because the user appears at `account.owner`).
 4. Polymorphic FKs always resolve into a typed nested object never left as a bare integer in nested responses. 
-5. Computed convenience fields(`total_debited`) appear only in nested responses, never in the flat entity representation. 
+5. Computed convenience fields (`total_debited`) appear only in nested responses, never in the flat entity representation. 

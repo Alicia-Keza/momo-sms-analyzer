@@ -51,3 +51,29 @@ def _classify(body: str) -> str:
     if "payment" in text:
         return "payment"
     return "other"
+
+def _extract_amount(body: str) -> float:
+    """Pull the fiirst  RWF amount out of the body and return it as a float """
+    m = _AMOUNT_RE.search(body)
+    if not m:
+        return 0.0
+    return float(m.group(1).replace(",", ""))
+
+def _extract_party(body: str, tx_type: str) -> tuple[str, str]:
+    '''Return (sender, receiver) extracted from the body  .'''
+
+    if tx_type == "receive_money":
+        m = _RECEIVED_FROM_RE.search(body)
+        return (m.group(1).strip() if m else "", "You") 
+    if tx_type == "send_money":
+        m = _TRANSFER_TO_RE.search(body)
+        return ("You", m.group(1).strip() if m else "") 
+    if tx_type == "payment":
+        m = _PAYMENT_TO_RE.search(body)
+        return ("You", m.group(1).strip() if m else "") 
+    if tx_type == "withdrawal":
+        m = _WITHDRAWN_BY_RE.search(body)
+        return ("You", m.group(1).strip() if m else "") 
+    if tx_type == "deposit":
+        return ("Bank", "You")
+    return ("", "")

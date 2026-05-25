@@ -18,6 +18,30 @@ VALID_PASSWORD = os.environ.get("API_PASSWORD")
 if not VALID_USERNAME or not VALID_PASSWORD:
     sys.stderr.write("ERROR: Please set API_USERNAME and API_PASSWORD in your .env file.\n")
     sys.exit(1)
-    
 
+#Check if the user sent the correct username and password
+def is_authorized(auth_header):
+
+    #the header must exist and start with the word "Basic "
+    if not auth_header or not auth_header.startswith("Basic "):
+        return False
+
+    try:
+        #Take the part after "Basic " (this is the coded username:password)
+        encoded = auth_header.split(" ",1)[1].strip()
+
+        #change it back to normal text like "admin:password123"
+        decoded = base64.b64decode(encoded).decode("utf-8")
+
+        #split it into two parts at the ":"
+        username, password = decoded.split(":", 1)
+
+    except Exception:
+        #if anything goes wrong, just say "not allowed"
+        return False
+
+    #allow only if both the username and password match
+    return username == VALID_USERNAME and password == VALID_PASSWORD
+    
+        
 

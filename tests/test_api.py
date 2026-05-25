@@ -82,4 +82,15 @@ def test_list_with_wrong_creds():
     status, body = request("GET", "/transctions", creds=WRONG_CREDS)
     check("status code is 401", status == 401)    
 
-    
+def test_get_one():
+    print("\nTEST 4: GET /transactions/1")
+    status, body =request ("GET", "/transactions/1")
+    check("status code is 200", status == 200)
+    check("response has an id field", isinstance(body, dict) and "id" in body)
+    check("returned id == 1", isinstance(body, dict) and body.get("id") == 1)
+
+def test_get_missing():
+    print("\nTEST 5: GET /transactions/99999999 (does not exist) ")
+    status, body = request("GET", "/transactions/99999999")
+    check("status code is 404", status == 404)
+        

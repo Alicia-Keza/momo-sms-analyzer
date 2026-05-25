@@ -59,5 +59,12 @@ def check(description, condition):
         _PASSED += 1
     else:
         _FAILED += 1
-            
+
+
+def test_list_with_auth():
+    print("\nTEST 1: GET /transactions with valid auth")
+    status, body= request("GET", "/transactions")
+    check("status code is 200", status == 200)
+    check("response is a list", isinstance(body, list))
+    check("list has atleast 1 record", isinstance(body, list) and len(body) > 0)      
 

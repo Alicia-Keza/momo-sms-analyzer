@@ -48,3 +48,16 @@ def request(method, path, body=None, creds=VALID_CREDS, send_auth=True):
         raw = e.read().decode("utf-8") if e.fp else ""
         return e.code, (json.loads(raw) if raw else None)
             
+_PASSED = 0
+_FAILED = 0
+
+def check(description, condition):
+    global _PASSED, _FAILED
+    mark = "PASS" if condition else "FAIL"
+    print(f"[{mark}] {description}")
+    if condition:
+        _PASSED += 1
+    else:
+        _FAILED += 1
+            
+

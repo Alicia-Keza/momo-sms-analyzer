@@ -93,3 +93,39 @@ class MoMoHandler(BaseHTTPRequestHandler):
         
         record = crud.create(body)
         self._send_json(201, record)
+
+
+    def do_PUT(self):
+        if not self._check_auth():
+            return
+        
+        tx_id = self._parse_id_from_path()
+        if tx_id is None:
+            self._send_json(404, {"error": "Route not found"})
+            return
+        
+        body = self._read_json_body()
+        if body is None:
+            self._send_json(400, {"error": "Invalid JSON body"})
+            return
+        
+        updated = crud.update(tx_id, body)
+        if updated is None:
+            self._send_json(404, {"error": "Transaction not found"})
+        else:
+            self._send_json(200, updated)
+
+    def do_DELETE(self):
+        if not self._check_auth():
+            return
+
+        tx_id = self._parse_id_from_path()
+        if tx_id is None:
+            self._send_json(404, {"error": "Route not found"})
+            return
+
+        deleted_id = crud.delete(tx_id)
+        if deleted_id is None:
+            self._send_json(404, {"error": "Transaction not found"})
+        else:
+            self._send_json(200, {"deleted": deleted_id})

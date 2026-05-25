@@ -129,3 +129,18 @@ class MoMoHandler(BaseHTTPRequestHandler):
             self._send_json(404, {"error": "Transaction not found"})
         else:
             self._send_json(200, {"deleted": deleted_id})
+
+
+def run_server(host: str = "", port: int = 8000) -> None:
+    server = HTTPServer((host, port), MoMoHandler)
+    from api.auth import VALID_USERNAME
+    print(f"Starting server on {host or 'localhost'}:{port} (use username '{VALID_USERNAME}')...")
+    try:
+        server.serve_forever()
+    except KeyboardInterrupt:
+        print("Shutting down server...")
+        server.server_close()
+
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT", "8000"))
+    run_server(port=port)

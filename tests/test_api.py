@@ -66,5 +66,20 @@ def test_list_with_auth():
     status, body= request("GET", "/transactions")
     check("status code is 200", status == 200)
     check("response is a list", isinstance(body, list))
-    check("list has atleast 1 record", isinstance(body, list) and len(body) > 0)      
+    check("list has atleast 1 record", isinstance(body, list) and len(body) > 0)    
 
+def test_list_without_auth():
+    print("\nTEST 2: GET /transactions without header")
+    status, body = request("GET", "/transactions", send_auth=False)
+    check("status code is 401", status == 401)
+    check(
+        "error message is 'Unauthorized'",
+        isinstance(body, dict) and body.get("error") == "Unauthorized",     
+
+    )
+def test_list_with_wrong_creds():
+    print("\nTEST 3: GET/transactions with wrong credentials")
+    status, body = request("GET", "/transctions", creds=WRONG_CREDS)
+    check("status code is 401", status == 401)    
+
+    

@@ -60,3 +60,30 @@ def send_unauthorized(handler):
     handler.wfile.write(payload)
 
 
+#run "python auth.py" to test if the login check works correctly
+# this part only runs when you run this file directly (not when it's imported)
+if __name__ == "__main__":
+
+    #create a header with the correct username and password
+    good = "Basic " + base64.b64encode( f"{VALID_USERNAME}:{VALID_PASSWORD}".encode()).decode()
+
+    #create a header with wrong credentials
+    bad = "Basic " + base64.b64encode(b"hacker:wrongpass").decode()
+
+    #Each of the lines below has a test name, the header to check, and the answer we expect
+    cases = [
+        ("valid credentials", good, True),
+        ("wrong credentials", bad, False),
+        ("missing header", None, False),
+        ("wrong scheme", "Bearer something", False),
+        ("malformed base64", "Basic not!@#valid", False),
+    ]
+
+    #run each test and print OK or FAIL
+    #go through each test one by one and check if it works correctly
+    for label, header, expected in cases:
+        got = is_authorized(header)
+        mark = "OK" if got == expected else "FAIL"
+        print(f"[{mark}] {label} -> expected {expected}, got {got}")
+
+

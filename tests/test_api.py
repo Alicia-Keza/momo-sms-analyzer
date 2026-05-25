@@ -29,3 +29,7 @@ BASE_URL = os.environ.get("API_BASE_URL", "http://localhost:8000")
 USERNAME = os.environ.get("API_USERNAME", "admin")
 PASSWORD = os.environ.get("API_PASSWORD", "password123")
 
+VALID_CREDS = base64.b64encode(f"{USERNAME}:{PASSWORD}".encode()).decode()
+WRONG_CREDS = base64.b64encode(b"hacker:wrongpassword").decode()    
+
+

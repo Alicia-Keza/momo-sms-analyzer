@@ -42,6 +42,21 @@ def is_authorized(auth_header):
 
     #allow only if both the username and password match
     return username == VALID_USERNAME and password == VALID_PASSWORD
-    
-        
+
+
+#send back 401 error in JSON when login fails
+def send_unauthorized(handler):
+    #create the error message that will be sent back to the user when login fails
+    payload = json.dumps({"error": "Unauthorized"}).encode("utf-8")
+
+    #tell the browser that the request was not allowed
+    handler.send_response(401)
+    handler.send_header("WWW-Authenticate", 'Basic realm="MOMO API"')
+    handler.send_header("Content-Type", "application/json; charset=utf-8")
+    handler.send_header( "Content-Length", str(len(payload)))
+    handler.end_headers()
+
+    #send the actual error message back
+    handler.wfile.write(payload)
+
 

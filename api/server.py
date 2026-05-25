@@ -53,3 +53,43 @@ class MoMoHandler(BaseHTTPRequestHandler):
     def _parse_id_from_path(self) -> Optional[int]:
         match = _ID_PATH_RE.match(urlparse(self.path).path)
         return int(match.group(1)) if match else None
+    
+    # routes
+
+    def do_GET(self):
+        if not self._check_auth():
+            return
+        
+        path = urlparse(self.path).path
+
+        if path in ("/transactions", "/transactions/"):
+            self._send_json(200, crud.list_all())
+            return
+        
+        tx_id = self._parse_id_from_path()
+        if tx_id is not None:
+            record = crud.get_by_id(tx_id)
+            if record is None:
+                self._send_json(404, {"error": "Transaction not found"})
+            else:
+                self._send_json(200, record)
+            return
+        
+        self._send_json(404, {"error": "Route not found"})
+
+
+    def do_POST(self):
+        if not self._check_auth():
+            return
+        
+        if urlparse(self.path).path not in ("/transactions", "/transactions/"):
+            self._send_json(404, {"error": "Route not found"})
+            return
+        
+        body = self._read_json_body()
+        if body is None:
+            self._send_json(400, {"error": "Invalid JSON body"})
+            return
+        
+        record = crud.create(body)
+        self._send_json(201, record)

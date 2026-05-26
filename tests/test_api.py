@@ -150,5 +150,27 @@ def test_post_bad_json():
     except urllib.error.HTTPError as e:
         status = e.code
     check("status code is 400", status == 400)
-    
-            
+
+def main():
+    print(f"Hitting {BASE_URL} as user {USERNAME!r}\n")
+    try:
+        test_list_with_auth()
+        test_list_without_auth()
+        test_list_with_wrong_creds()
+        test_get_one()
+        test_get_missing()
+        test_create_update_delete()
+        test_post_bad_json()
+    except urllib.error.URLError as e:
+        print(f"\nCould not reach the API server at {BASE_URL}.")
+        print(f"Underlying error: {e}")
+        print("Did you start it with 'python -m api.server'?")
+        sys.exit(2)
+
+    print(f"\n{'=' * 50}")
+    print(f"Results: {_PASSED} passed, {_FAILED} failed.")
+    print("=" * 50) 
+    sys.exit(0 if _FAILED == 0 else 1)
+
+if __name__ == "__main__":
+    main()       

@@ -94,3 +94,42 @@ def test_get_missing():
     status, body = request("GET", "/transactions/99999999")
     check("status code is 404", status == 404)
         
+def test_create_update_delete():
+    print("\nTEST 6: POST -> PUT -> DELETE round trip")
+    new_txn ={
+        "transaction_type": "test_send",
+        "amount": 123.56,
+        "sender": "Test Sender",
+        "receiver": "Test Receiver",
+        "timestamp": "2026-05-22t12:00:00Z",
+        "external_tx_id": "TEST123",
+        "raw_body": "automate test transaction",
+    }
+    
+    # POST
+    status, created =request("POST", "/transactions", body=new_txn)
+    check("POST status code is 201", status == 201)
+    check("created object has an id", isinstance(created, dict) and "id" in created)
+    new_id = created["id" ] if isinstance(created, dict) else None
+
+    # PUT
+    if new_id is not None:
+        status, updated = request(
+            "PUT", f"/transactions/{new_id}", body={"amount": 9999.99}
+        )
+        check("PUT status code is 200", status == 200)
+        check(
+            "amount was updates to 9999.99",
+            isinstance(updated, dict) and updated.get("amount") == 9999.99,
+        )
+    # DELETE
+    if new_id is not None:
+        status, deleted = request("DELETE", f"/transactions/{new_id}")
+        check("DELETE status code is 200", status == 200)
+        check(
+            "deleted object matches",
+            isinstance(deleted, dict) and deleted.get("deleted") == new_id,
+        )   
+
+        status, _ = request("GET", f"/transactions/{new_id}")
+        check("GET after delete returns 404", status == 404) 

@@ -133,3 +133,22 @@ def test_create_update_delete():
 
         status, _ = request("GET", f"/transactions/{new_id}")
         check("GET after delete returns 404", status == 404) 
+
+def test_post_bad_json():
+    print("\nTEST 7: POST with malformed body")
+    # Build a request manually to send raw bytes that aren't JSON.
+    req = urllib.request.Request(
+        BASE_URL + "/transactions",
+        data=b"this is not json",
+        method="POST",
+    )
+    req.add_header("Authorization", f"Basic {VALID_CREDS}")
+    req.add_header("Content-Type", "application/json")
+    try:
+        with urllib.request.urlopen(req) as resp:
+            status = resp.status
+    except urllib.error.HTTPError as e:
+        status = e.code
+    check("status code is 400", status == 400)
+    
+            

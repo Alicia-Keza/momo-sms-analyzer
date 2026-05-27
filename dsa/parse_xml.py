@@ -91,4 +91,35 @@ def _epoch_ms_to_iso(epoch_ms: int) -> str:
         )
     except (TypeError, ValueError):
         return ""
-    
+
+#public api
+
+def _extract_transaction(sms_element, tx_id: int) -> dict:
+    body = sms_element.get("body", "")
+    tx_type = _classify(body)
+    sender, receiver = _extract_party(body, tx_type)
+    return {
+        "id": tx_id,
+        "transaction_type": tx_type,
+        "amount": _extract_amount(body),
+        "sender": sender,
+        "receiver": receiver,
+        "timestamp": _epoch_ms_to_iso(sms_element.get("date", "0")),
+        "external_tx_id": _extract_external_tx_id(body),
+        "raw_body": body,
+    }
+
+
+def load_transactions(
+    xml_path: str | Path = "modified_sms_v2.xml",
+) -> list[dict]:
+    """Parse the XML and return a list of transaction dicts.
+
+    The list is ordered by appearance in the file. IDs are 1-based.
+    """
+    tree = ET.parse(xml_path)
+    root = tree.getroot()
+    transactions: list[dict] = []
+    for idx, sms in enumerate(root.findall(".//sms"), start=1):
+        transactions.append(_extract_transaction(sms, idx))
+    return transactions

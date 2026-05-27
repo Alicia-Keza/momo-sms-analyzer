@@ -90,6 +90,17 @@ def print_report(result: dict) -> None:
     "searching in O(log n) time."
     )
 
+ # CLI entry point
+
+if __name__ == "__main__":
+    here = Path(__file__).resolve().parent.parent
+    xml_file = here / "modified_sms_v2.xml"
+
+    txs = load_transactions(xml_file)
+    result = benchmark(txs, iterations=5000)
+    print_report(result)
+       
+
 
 
 

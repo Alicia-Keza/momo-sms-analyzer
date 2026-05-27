@@ -77,3 +77,18 @@ def _extract_party(body: str, tx_type: str) -> tuple[str, str]:
     if tx_type == "deposit":
         return ("Bank", "You")
     return ("", "")
+
+def _extract_external_tx_id(body: str) -> str:
+    m = _TXID_RE.search(body)
+    return m.group(1) if m else ""
+
+def _epoch_ms_to_iso(epoch_ms: int) -> str:
+    try: 
+        seconds = int(epoch_ms) / 1000.0
+        return (
+            datetime.fromtimestamp(seconds, tz=timezone.utc)
+            .strftime("%Y-%m-%dT%H:%M:%SZ")
+        )
+    except (TypeError, ValueError):
+        return ""
+    

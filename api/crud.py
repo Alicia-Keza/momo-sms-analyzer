@@ -66,3 +66,25 @@ def delete(tx_id):
     save_to_disk()
     return tx_id
 
+# run the file alone to test the functions
+if __name__ == "__main__":
+    print("Loaded ", len(list_all()), " transactions")
+
+    first = get_by_id(1)
+    print("First transaction: ", first["id"], first["transaction_type"], first["amount"])
+
+    test = create({
+        "transaction_type": "test",
+        "amount": 3500,
+        "sender": "A",
+        "receiver": "B"
+    })
+    print("Created transaction test tx with id: ", test["id"])
+
+    updated = update(test["id"], {"amount": 5000})
+    print("Updated transaction test tx with new amount: ", updated["amount"])
+
+    deleted_id = delete(test["id"])
+    print("Deleted transaction with id: ", deleted_id)
+
+    print("All transactions count: ", len(list_all()))

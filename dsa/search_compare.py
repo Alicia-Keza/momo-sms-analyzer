@@ -55,15 +55,43 @@ def benchmark(transactions: list[dict], iterations: int = 5000)  -> dict:
     dict_total = time.perf_counter() - t0
 
     return{
-    "records":len(transactions),
-    "iterations":iterations,
-    "target_id":target_id,
-    "linear_total_s":linear_total,
-    "linear_avg_us":(linear_total/iterations)* 1_000_000,
-    "dict_total_s":dict_total,
-    "dict_avg_us":(dict_total/iterations) * 1_000_000,
-    "speedup": linear_total / dict_total if dict_total > 0 else float("inf")
-}
+        "records":len(transactions),
+        "iterations":iterations,
+        "target_id":target_id,
+        "linear_total_s":linear_total,
+        "linear_avg_us":(linear_total/iterations)* 1_000_000,
+        "dict_total_s":dict_total,
+        "dict_avg_us":(dict_total/iterations) * 1_000_000,
+        "speedup": linear_total / dict_total if dict_total > 0 else float("inf")
+    }
+def print_report(result: dict) -> None:
+    print("=" * 60)
+    print("DSA BENCHMARK - linear search vs dictionary lookup")
+    print("=" * 60)
+    print(f"Records in list: {result['records']:>12,}")
+    print(f"Iterations per test : {result['iterations']:>12,}")
+    print(f"Target id (worst)   : {result['target_id']:>12}")
+    print()
+    print(f"Linear search       : {result['linear_total_s']:>10.4f} s total"
+          f"   ({result['linear_avg_us']:>8.2f} us per lookup)")
+    print(f"Dictionary lookup   : {result['dict_total_s']:>10.4f} s total"
+          f"   ({result['dict_avg_us']:>8.2f} us per lookup)")
+    print()
+    print(f"Speed-up factor     : {result['speedup']:>10.1f} x")
+    print("=" * 60)
+    print()
+    print("REFLECTION")
+    print("-" * 60)
+    print(
+    "Linear search is O(n) because it checks transactions one by one. "
+    "Dictionary lookup is faster at O(1) average time because Python "
+    "dictionaries use hash tables. Another useful data structure is "
+    "a binary search tree, which keeps data ordered and allows "
+    "searching in O(log n) time."
+    )
+
+
+
 
 
 

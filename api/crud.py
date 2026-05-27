@@ -20,3 +20,49 @@ NEXT_ID = 1
 for t in TRANSACTIONS:
     if t["id"] >= NEXT_ID:
         NEXT_ID = t["id"] + 1
+
+def find_index_by_id(tx_id):
+    # loop through the list and return the position where id matches
+    for i in range(len(TRANSACTIONS)):
+        if TRANSACTIONS[i]["id"] == tx_id:
+            return i
+    return None
+
+def save_to_disk():
+    # write the current list to disk after every change
+    save_as_json(TRANSACTIONS, JSON_PATH)
+
+def list_all():
+    return TRANSACTIONS
+
+def get_by_id(tx_id):
+    i = find_index_by_id(tx_id)
+    if i is None:
+        return None
+    return TRANSACTIONS[i]
+
+def create(payload):
+    global NEXT_ID
+    payload["id"] = NEXT_ID
+    NEXT_ID = NEXT_ID + 1
+    TRANSACTIONS.append(payload)
+    save_to_disk()
+    return payload
+
+def update(tx_id, body):
+    i = find_index_by_id(tx_id)
+    if i is None:
+        return None
+    body["id"] = tx_id  # do not let the id change
+    TRANSACTIONS[i].update(body)
+    save_to_disk()
+    return TRANSACTIONS[i]
+
+def delete(tx_id):
+    i = find_index_by_id(tx_id)
+    if i is None:
+        return None
+    TRANSACTIONS.pop(i)
+    save_to_disk()
+    return tx_id
+

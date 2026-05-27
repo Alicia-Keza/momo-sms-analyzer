@@ -123,3 +123,31 @@ def load_transactions(
     for idx, sms in enumerate(root.findall(".//sms"), start=1):
         transactions.append(_extract_transaction(sms, idx))
     return transactions
+
+def save_as_json(
+    transactions: list[dict],
+    json_path: str | Path = "transactions.json",
+) -> None:
+    """Write the transactions list to a JSON file (pretty-printed)."""
+    Path(json_path).write_text(json.dumps(transactions, indent=2))
+
+
+if __name__ == "__main__":
+    here = Path(__file__).resolve().parent.parent
+    xml_file = here / "modified_sms_v2.xml"
+    out_file = here / "transactions.json"
+
+    txs = load_transactions(xml_file)
+    save_as_json(txs, out_file)
+
+    print(f"Parsed {len(txs)} transactions from {xml_file.name}")
+    print(f"Saved JSON snapshot to {out_file.name}")
+
+    # Checkin  of the first 3 records
+    print("\nFirst 3 records:")
+    for t in txs[:3]:
+        print(
+            f"  #{t['id']:>4}  {t['transaction_type']:<14} "
+            f"{t['amount']:>10,.2f} RWF  "
+            f"{t['sender'] or '-'} -> {t['receiver'] or '-'}"
+        )

@@ -1,0 +1,22 @@
+# Local environment variables (NEVER commit these)
+.env
+
+# Python bytecode / caches
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Generated data files (server rebuilds these from XML)
+transactions.json
+
+# VS Code workspace
+.vscode/
+
+# macOS noise
+.DS_Store
+
+# Python virtual environment folders
+venv/
+env/
+.venv/

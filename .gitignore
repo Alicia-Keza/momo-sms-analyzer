@@ -1,0 +1,31 @@
+# Environment/secrets
+.env 
+
+#python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.venv/
+venv/
+
+#OS junk
+#files the operating system creates automatically; irrelevant to the project
+.DS_store
+Thumbs.db
+
+#Generated data (the parser regenerates it on startup)
+#transactions.json is derived output , rebuilt each run, so we don't track it
+transactions.json
+
+#IDE
+#Editor-specific settings folders; personal to each developer's machine
+.vscode/
+.idea
+
+#Test artefacts
+#caches and coverage reports produced when running the test suite
+.pytest_cache/
+htmlcov/
+.coverage
+

@@ -47,7 +47,7 @@ class MoMoHandler(BaseHTTPRequestHandler):
     # routes
 
     def do_GET(self):
-        if not self._check_auth():
+        if not self.check_auth():
             return
 
         if self.path == "/transactions":
@@ -67,7 +67,7 @@ class MoMoHandler(BaseHTTPRequestHandler):
 
 
     def do_POST(self):
-        if not self._check_auth():
+        if not self.check_auth():
             return
         
         if self.path != "/transactions":

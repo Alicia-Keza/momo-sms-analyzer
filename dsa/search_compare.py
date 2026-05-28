@@ -1,4 +1,4 @@
-from __future__ import __annotations__
+from __future__ import annotations
 
 
 import time
@@ -9,7 +9,7 @@ from pathlib import Path
 import sys
 sys.path.insert(0,str(Path(__file__).resolve().parent.parent))
 
-from dsa.parse.xml import load_transactions
+from dsa.parse_xml import load_transactions
 
 ## search methods
 

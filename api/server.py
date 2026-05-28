@@ -28,7 +28,7 @@ class MoMoHandler(BaseHTTPRequestHandler):
         raw = self.rfile.read(length)
         try:
             return json.loads(raw)
-        except:
+        except (json.JSONDecodeError, ValueError):
             return None
         
     def check_auth(self):
